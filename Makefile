@@ -1,6 +1,8 @@
 .DEFAULT_GOAL := help
 .PHONY: help install dev build start lint lint-fix typecheck format format-check compose-up compose-down db-generate db-migrate db-push db-studio
 
+ENGINE ?= $(if $(engine),$(engine),podman)
+
 help:
 	@echo "Application:"
 	@echo "  dev             Start React Router dev server"
@@ -13,9 +15,9 @@ help:
 	@echo "  format          Format files with Prettier"
 	@echo "  format-check    Check formatting with Prettier"
 	@echo ""
-	@echo "Database & Docker:"
-	@echo "  compose-up      Start Docker compose services"
-	@echo "  compose-down    Stop Docker compose services"
+	@echo "Database & Containers:"
+	@echo "  compose-up      Start compose services (pass engine=docker, default: podman)"
+	@echo "  compose-down    Stop compose services (pass engine=docker, default: podman)"
 	@echo "  db-generate     Generate Drizzle migrations"
 	@echo "  db-migrate      Run Drizzle migrations (pass ssh=true for SSH tunnel)"
 	@echo "  db-push         Push Drizzle schema to database"
@@ -49,10 +51,10 @@ format-check:
 	npm run format:check
 
 compose-up:
-	docker compose up -d
+	$(ENGINE) compose up -d
 
 compose-down:
-	docker compose down
+	$(ENGINE) compose down
 
 db-generate:
 	npm run db:generate

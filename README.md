@@ -88,9 +88,12 @@ POSTGRES_DB=si_akoor
 Start the local PostgreSQL service in the background:
 
 ```bash
-docker compose up -d postgres
-# or using Makefile:
+# Default uses Podman:
 make compose-up
+
+# Or with Docker:
+make compose-up engine=docker
+# (or direct: docker compose up -d postgres)
 ```
 
 ### 3. Install Dependencies
@@ -265,20 +268,20 @@ Opens Drizzle Studio at **[https://local.drizzle.studio](https://local.drizzle.s
 
 ## Available Commands
 
-| Command                       | Makefile                   | Description                                  |
-| :---------------------------- | :------------------------- | :------------------------------------------- |
-| `npm run dev`                 | `make dev`                 | Start development server on port 5173        |
-| `npm run build`               | `make build`               | Build production client & server             |
-| `npm run start`               | `make start`               | Run production server                        |
-| `npm run typecheck`           | `make typecheck`           | Run React Router typegen & TypeScript check  |
-| `npm run lint`                | `make lint`                | Run ESLint checks                            |
-| `npm run lint:fix`            | `make lint-fix`            | Auto-fix ESLint issues                       |
-| `npm run format`              | `make format`              | Format code with Prettier                    |
-| `npm run format:check`        | `make format-check`        | Verify code formatting                       |
-| `docker compose up -d`        | `make compose-up`          | Start PostgreSQL container                   |
-| `docker compose down`         | `make compose-down`        | Stop PostgreSQL container                    |
-| `npm run db:generate`         | `make db-generate`         | Generate Drizzle migration files             |
-| `npm run db:migrate`          | `make db-migrate`          | Apply migrations to local DB                 |
-| `npm run db:migrate -- --ssh` | `make db-migrate ssh=true` | Apply migrations via SSH tunnel              |
-| `npm run db:push`             | `make db-push`             | Push schema directly without migration files |
-| `npm run db:studio`           | `make db-studio`           | Open Drizzle Studio UI                       |
+| Command                                         | Makefile                            | Description                                  |
+| :---------------------------------------------- | :---------------------------------- | :------------------------------------------- |
+| `npm run dev`                                   | `make dev`                          | Start development server on port 5173        |
+| `npm run build`                                 | `make build`                        | Build production client & server             |
+| `npm run start`                                 | `make start`                        | Run production server                        |
+| `npm run typecheck`                             | `make typecheck`                    | Run React Router typegen & TypeScript check  |
+| `npm run lint`                                  | `make lint`                         | Run ESLint checks                            |
+| `npm run lint:fix`                              | `make lint-fix`                     | Auto-fix ESLint issues                       |
+| `npm run format`                                | `make format`                       | Format code with Prettier                    |
+| `npm run format:check`                          | `make format-check`                 | Verify code formatting                       |
+| `podman compose up -d` / `docker compose up -d` | `make compose-up [engine=docker]`   | Start PostgreSQL container (default: podman) |
+| `podman compose down` / `docker compose down`   | `make compose-down [engine=docker]` | Stop PostgreSQL container (default: podman)  |
+| `npm run db:generate`                           | `make db-generate`                  | Generate Drizzle migration files             |
+| `npm run db:migrate`                            | `make db-migrate`                   | Apply migrations to local DB                 |
+| `npm run db:migrate -- --ssh`                   | `make db-migrate ssh=true`          | Apply migrations via SSH tunnel              |
+| `npm run db:push`                               | `make db-push`                      | Push schema directly without migration files |
+| `npm run db:studio`                             | `make db-studio`                    | Open Drizzle Studio UI                       |
