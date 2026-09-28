@@ -158,21 +158,15 @@ export const users = pgTable('users', {
 });
 ```
 
-Export your tables from `app/db/schema/index.ts` so they are available in Drizzle relational queries and migrations:
-
-```typescript
-export * from './schema';
-```
-
 ### 2. Querying in Loaders and Actions
 
-Import `db` from `~/db/index.server` and table definitions from `~/db/schema`:
+Import `db` from `~/db/index.server` and table definitions directly from `~/db/schema/schema`:
 
 ```typescript
 // app/routes/users.tsx
 import { eq } from 'drizzle-orm';
 import { db } from '~/db/index.server';
-import { users } from '~/db/schema';
+import { users } from '~/db/schema/schema';
 
 import type { Route } from './+types/users';
 
