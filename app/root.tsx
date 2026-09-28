@@ -1,3 +1,4 @@
+import { requestLogger } from '@/middleware';
 import {
   Links,
   Meta,
@@ -9,6 +10,8 @@ import {
 
 import type { Route } from './+types/root';
 import './app.css';
+
+export const middleware = [requestLogger];
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

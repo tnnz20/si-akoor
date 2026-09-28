@@ -24,6 +24,8 @@ export default {
     '<SEPARATOR>',
     '^@/lib/(.*)$',
     '<SEPARATOR>',
+    '^@/middleware/(.*)$',
+    '<SEPARATOR>',
     '^@/layouts/(.*)$',
     '<SEPARATOR>',
     '^@/components/(.*)$',

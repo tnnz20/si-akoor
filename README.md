@@ -28,6 +28,7 @@ Sistem Informasi AKOOR.
 │   │   └── index.server.ts # Drizzle database instance
 │   ├── hooks/         # Custom React hooks
 │   ├── lib/           # Utility functions (logger, cn helper, etc.)
+│   ├── middleware/    # Server middlewares (request logger, auth, etc.)
 │   ├── routes/        # React Router routes and pages
 │   ├── schema/        # Zod validation schemas
 │   ├── types/         # Shared TypeScript interfaces & types
