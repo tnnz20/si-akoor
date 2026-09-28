@@ -1,14 +1,14 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
-import * as schema from './schema';
+import * as schema from './schema/schema';
 
-const globalForDb = globalThis as unknown as {
-  client: postgres.Sql | undefined;
-};
+declare global {
+  var __postgresClient: postgres.Sql | undefined;
+}
 
 const client =
-  globalForDb.client ??
+  globalThis.__postgresClient ??
   postgres({
     host: process.env.POSTGRES_HOST || 'localhost',
     port: Number(process.env.POSTGRES_PORT || 5432),
@@ -18,7 +18,7 @@ const client =
   });
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForDb.client = client;
+  globalThis.__postgresClient = client;
 }
 
 export const db = drizzle(client, { schema });

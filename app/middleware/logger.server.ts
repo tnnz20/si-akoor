@@ -18,7 +18,7 @@ export async function requestLogger(
   try {
     const response = await next();
     const duration = (performance.now() - start).toFixed(2);
-    const status = (response as Response)?.status ?? 200;
+    const status = response instanceof Response ? response.status : 200;
     logger.info(`<-- [${request.method}] ${url.pathname} ${status} (${duration}ms)`);
     return response;
   } catch (error) {

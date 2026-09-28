@@ -1,4 +1,3 @@
-import { requestLogger } from '@/middleware';
 import {
   Links,
   Meta,
@@ -7,6 +6,8 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
 } from 'react-router';
+
+import { requestLogger } from '@/middleware/logger.server';
 
 import type { Route } from './+types/root';
 import './app.css';
@@ -66,11 +67,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     <main className="container mx-auto p-4 pt-16">
       <h1>{message}</h1>
       <p>{details}</p>
-      {stack && (
+      {stack ? (
         <pre className="w-full overflow-x-auto p-4">
           <code>{stack}</code>
         </pre>
-      )}
+      ) : null}
     </main>
   );
 }
