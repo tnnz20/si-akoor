@@ -17,7 +17,7 @@ help:
 	@echo "  compose-up      Start Docker compose services"
 	@echo "  compose-down    Stop Docker compose services"
 	@echo "  db-generate     Generate Drizzle migrations"
-	@echo "  db-migrate      Run Drizzle migrations"
+	@echo "  db-migrate      Run Drizzle migrations (pass ssh=true for SSH tunnel)"
 	@echo "  db-push         Push Drizzle schema to database"
 	@echo "  db-studio       Launch Drizzle Studio"
 
@@ -58,7 +58,7 @@ db-generate:
 	npm run db:generate
 
 db-migrate:
-	npm run db:migrate
+	npm run db:migrate $(if $(filter true,$(ssh)),-- --ssh)
 
 db-push:
 	npm run db:push
