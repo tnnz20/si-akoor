@@ -83,6 +83,6 @@ npm run lint
 npm run format:check
 npm run db:generate
 npm run db:migrate          # Local migration (or: make db-migrate)
-npm run db:migrate:ssh      # Remote migration via SSH tunnel (or: make db-migrate ssh=true)
+npm run db:migrate -- --ssh # Remote migration via SSH tunnel (or: make db-migrate ssh=true)
 npm run db:studio
 ```
