@@ -32,7 +32,7 @@ Always check the `[MODES: declarative, ...]` marker in a doc before applying it.
 Typical setup:
 
 ```tsx
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Route, Routes } from 'react-router';
 
 function App() {
   return (

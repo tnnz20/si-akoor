@@ -33,17 +33,17 @@ Always check the `[MODES: data, ...]` marker in a doc before applying it.
 Typical setup:
 
 ```tsx
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { RouterProvider, createBrowserRouter } from 'react-router';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     Component: Root,
     loader: rootLoader,
     children: [
       { index: true, Component: Home },
       {
-        path: "projects/:projectId",
+        path: 'projects/:projectId',
         Component: Project,
         loader: projectLoader,
       },

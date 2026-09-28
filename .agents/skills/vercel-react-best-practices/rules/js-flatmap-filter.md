@@ -14,17 +14,13 @@ Chaining `.map().filter(Boolean)` creates an intermediate array and iterates twi
 **Incorrect (2 iterations, intermediate array):**
 
 ```typescript
-const userNames = users
-  .map(user => user.isActive ? user.name : null)
-  .filter(Boolean)
+const userNames = users.map((user) => (user.isActive ? user.name : null)).filter(Boolean);
 ```
 
 **Correct (1 iteration, no intermediate array):**
 
 ```typescript
-const userNames = users.flatMap(user =>
-  user.isActive ? [user.name] : []
-)
+const userNames = users.flatMap((user) => (user.isActive ? [user.name] : []));
 ```
 
 **More examples:**
@@ -55,6 +51,7 @@ const numbers = strings.flatMap(s => {
 ```
 
 **When to use:**
+
 - Transforming items while filtering some out
 - Conditional mapping where some inputs produce no output
 - Parsing/validating where invalid inputs should be skipped
