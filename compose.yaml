@@ -1,42 +1,45 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: si_akoor_app
-    restart: unless-stopped
-    ports:
-      - '${PORT:-3000}:3000'
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-si_akoor}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
+  postgres:
     image: postgres:16-alpine
-    container_name: si_akoor_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-si_akoor}
     ports:
-      - '${DB_PORT:-5432}:5432'
+      - '${POSTGRES_HOST_PORT:-5432}:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - si-akoor-net
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-si_akoor}']
-      interval: 5s
-      timeout: 5s
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U $${POSTGRES_USER:-postgres}']
+      interval: 10s
+      timeout: 10s
       retries: 5
+      start_period: 30s
+
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "${PORT:-3000}:3000"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_HOST: postgres
+  #     POSTGRES_PORT: 5432
+  #   networks:
+  #     - si-akoor-net
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+networks:
+  si-akoor-net:
+    driver: bridge
 
 volumes:
-  postgres_data:
+  postgres-data:

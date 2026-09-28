@@ -61,7 +61,7 @@ Sistem Informasi AKOOR.
 2. Start the PostgreSQL database container:
 
    ```bash
-   docker compose up -d db
+   docker compose up -d postgres
    ```
 
 3. Install dependencies and run development server:
