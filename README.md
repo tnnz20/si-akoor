@@ -45,7 +45,7 @@ Sistem Informasi AKOOR.
 
 ## Requirements
 
-- Node.js 22.x or newer
+- Node.js 24.21 or newer
 - npm
 - Docker and Docker Compose (for PostgreSQL)
 - GNU Make (optional)

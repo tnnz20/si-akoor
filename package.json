@@ -2,6 +2,9 @@
   "name": "si-akoor",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -38,7 +41,7 @@
     "@react-router/dev": "^8.4.0",
     "@tailwindcss/vite": "^4.2.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^22.13.10",
+    "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "drizzle-kit": "^0.31.11",
