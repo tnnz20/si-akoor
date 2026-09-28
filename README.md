@@ -22,7 +22,10 @@ Sistem Informasi AKOOR.
 ├── app/
 │   ├── components/    # Reusable UI components & shadcn primitives
 │   ├── constants/     # Application constants
-│   ├── db/            # Database client instance
+│   ├── db/            # Database client, migrations, and schema
+│   │   ├── migrations/    # Generated SQL migrations
+│   │   ├── schema/        # Drizzle table schemas
+│   │   └── index.server.ts # Drizzle database instance
 │   ├── hooks/         # Custom React hooks
 │   ├── lib/           # Utility functions (logger, cn helper, etc.)
 │   ├── routes/        # React Router routes and pages
@@ -31,9 +34,6 @@ Sistem Informasi AKOOR.
 │   ├── app.css        # Tailwind v4 styles & CSS variables
 │   ├── root.tsx       # Root layout & HTML shell
 │   └── routes.ts      # Route configuration
-├── db/
-│   ├── migrations/    # Generated SQL migrations
-│   └── schema.ts      # Drizzle table schemas & relations
 ├── public/            # Static assets
 ├── compose.yaml       # Docker Compose with PostgreSQL 16 Alpine
 ├── Dockerfile         # Multi-stage production container
