@@ -81,3 +81,55 @@
     @apply bg-background text-foreground;
   }
 }
+
+.font-sans {
+  font-family:
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.font-hand {
+  font-family: 'Caveat', cursive;
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(230, 225, 215, 0.9);
+}
+
+.curved-arrow {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.05));
+}
+
+.bg-brand-mesh {
+  background-color: #faf7f2;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-attachment: fixed;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
