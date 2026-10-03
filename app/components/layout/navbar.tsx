@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router';
+import { TOP_NAV_LINKS } from '~/constants/navigation';
 
 import { Button } from '@/components/ui/button';
 
@@ -37,36 +38,15 @@ export function Navbar() {
 
         {/* Navigation links (singkat) */}
         <div className="hidden shrink-0 items-center gap-5 text-sm font-medium text-neutral-600 sm:gap-6 md:flex lg:gap-7">
-          <a
-            href={isLoginPage ? '/#fitur' : '#fitur'}
-            className="whitespace-nowrap transition-colors hover:text-neutral-900"
-          >
-            Fitur
-          </a>
-          <a
-            href={isLoginPage ? '/#keunggulan' : '#keunggulan'}
-            className="whitespace-nowrap transition-colors hover:text-neutral-900"
-          >
-            Modul
-          </a>
-          <a
-            href={isLoginPage ? '/#mockup-dashboard' : '#mockup-dashboard'}
-            className="whitespace-nowrap transition-colors hover:text-neutral-900"
-          >
-            Pratinjau
-          </a>
-          <a
-            href={isLoginPage ? '/#simulator' : '#simulator'}
-            className="whitespace-nowrap transition-colors hover:text-neutral-900"
-          >
-            Simulasi
-          </a>
-          <a
-            href={isLoginPage ? '/#faq' : '#faq'}
-            className="whitespace-nowrap transition-colors hover:text-neutral-900"
-          >
-            FAQ
-          </a>
+          {TOP_NAV_LINKS.map((item) => (
+            <Link
+              key={item.label}
+              to={item.href}
+              className="whitespace-nowrap transition-colors hover:text-neutral-900"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
         {/* Action button */}

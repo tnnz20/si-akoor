@@ -71,13 +71,13 @@ export function Footer() {
             className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-neutral-600"
           >
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 className="transition-colors duration-150 hover:text-neutral-900"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
