@@ -19,22 +19,25 @@ Sistem Informasi Apel dan Koordinasi.
 .
 ├── app/
 │   ├── components/        # Reusable UI components & shadcn primitives
-│   │   └── ui/            # Button, Input, etc.
-│   ├── constants/         # App-wide constants (APP_NAME, etc.)
-│   ├── db/                # Database layer
+│   │   ├── home/          # Landing page sections & bento widgets (hero, features, etc.)
+│   │   ├── layout/        # Navbar & Footer layout blocks
+│   │   ├── shared/        # Shared presentation widgets
+│   │   └── ui/            # shadcn primitives (button, card, dialog, sonner, etc.)
+│   ├── constants/         # App & domain constants (home.ts, navigation.ts)
+│   ├── db/                # Database layer (PostgreSQL & Drizzle ORM)
 │   │   ├── migrations/    # Generated SQL migration files
 │   │   ├── schema/        # Drizzle table schemas
 │   │   └── index.server.ts# Drizzle DB client instance
-│   ├── hooks/             # Custom React hooks
+│   ├── hooks/             # Custom React hooks (use-count-up, use-reveal)
+│   ├── layouts/           # Persistent route shells with <Outlet /> (home-layout.tsx)
 │   ├── lib/               # Utility functions (logger, cn helper, etc.)
 │   ├── middleware/        # Server middlewares (request logger, auth, etc.)
-│   ├── routes/            # React Router routes and pages
+│   ├── routes/            # React Router routes and pages (home.tsx, login.tsx)
 │   ├── schema/            # Zod validation schemas
-│   ├── types/             # Shared TypeScript interfaces & types
-│   ├── app.css            # Tailwind v4 styles & CSS variables
-│   ├── root.tsx           # Root layout & HTML shell
-│   └── routes.ts          # Route configuration
-├── public/                # Static public assets
+│   ├── types/             # Shared TypeScript interfaces & types (home.ts, layout.ts)
+│   ├── app.css            # Tailwind v4 styles, theme tokens & shadcn variables
+│   ├── root.tsx           # Root layout & HTML shell (lang="id")
+│   └── routes.ts          # Route manifest & URL configuration
 ├── scripts/               # Migration & SSH tunnel scripts
 │   ├── migrate.ts         # Migration runner (local & SSH)
 │   └── tunnel.ts          # SSH port forwarder

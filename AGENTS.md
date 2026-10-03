@@ -68,8 +68,8 @@
   export async function action({ request }: Route.ActionArgs) { ... }
   export default function Home({ loaderData }: Route.ComponentProps) { ... }
   ```
-- Use React Router `<Link>` and `<NavLink>` for client-side navigation (e.g. `<Link to="/login">`). Use hash anchor links for in-page section scrolling (e.g. `<Link to="/#simulator">`).
-- Use `useNavigation().state` in [`app/root.tsx`](file:///c:/Users/tnnz/Documents/projects/freelancer/si-akoor/app/root.tsx) for page transition indicators.
+- Use React Router `<Link>` and `<NavLink>` for client-side navigation (e.g. `<Link to="/login">`). Use hash anchor links for in-page section scrolling (e.g. `<Link to="/#simulator">`). Never use raw HTML `<a href="...">` for internal routes or anchor jumps to prevent full-page browser reloads.
+- Use `useNavigation().state` in [`app/root.tsx`](file:///c:/Users/tnnz/Documents/projects/freelancer/si-akoor/app/root.tsx) for page transition indicators. The root document sets `<html lang="id">` for Indonesian accessibility and screen reader fidelity.
 - Use `HydrateFallback` for routes requiring client-side initialization skeletons.
 
 ### 2. Layout Architecture (`app/layouts/` vs `app/components/layout/`)
@@ -82,6 +82,7 @@
 - **`app/components/layout/` (Structural Layout Blocks)**:
   - Reserved for reusable visual layout blocks: `Navbar`, `Footer`, `Sidebar`, `Breadcrumbs`.
   - Consumed by route layouts across the application.
+  - Navigation links must map from centralized constants in [`app/constants/navigation.ts`](file:///c:/Users/tnnz/Documents/projects/freelancer/si-akoor/app/constants/navigation.ts) (`TOP_NAV_LINKS`, `NAV_LINKS`) as the single source of truth.
 
 ### 3. Components Organization & shadcn/ui
 
@@ -91,7 +92,7 @@
   - **Never re-invent custom primitives** (like manual modal backdrops, dropdowns, accordions, or bespoke floating toast systems) when a shadcn component exists in `app/components/ui/`.
 - **`app/components/<domain>/`**: Domain/page presentation widgets belong in domain folders (e.g., `app/components/home/` contains `hero-section.tsx`, `features-section.tsx`, `simulator-section.tsx`, `comparison-section.tsx`, `divisions-section.tsx`, `faq-section.tsx`, `cta-section.tsx`).
 - **`app/components/shared/`**: Reusable custom components utilized by two or more distinct features/routes.
-- **`app/types/` & `app/constants/`**: Keep data structures and static mock datasets centralized in dedicated domain files (e.g., `app/types/home.ts`, `app/constants/home.ts`). Do not mix static content inside route component files. **Exception**: If a constant contains Tailwind CSS classes (e.g., dynamic style tokens, badge classes, or height utilities), keep it co-located in the component to preserve Tailwind compiler class extraction.
+- **`app/types/` & `app/constants/`**: Keep data structures and static mock datasets centralized in dedicated domain files (e.g., `app/types/home.ts`, `app/constants/home.ts`, `app/constants/navigation.ts`). Do not mix static content inside route component files. **Exception**: If a constant contains Tailwind CSS classes (e.g., dynamic style tokens, badge classes, or height utilities), keep it co-located in the component to preserve Tailwind compiler class extraction.
 
 ### 4. Global Toast Notifications (Sonner)
 
@@ -158,6 +159,7 @@
   - Input changes: `React.ChangeEvent<HTMLInputElement>` (or `HTMLTextAreaElement`, `HTMLSelectElement`)
   - Text input events: `React.InputEvent<HTMLInputElement>`
   - Generic synthetic events: `React.SyntheticEvent<Element>`
+- **Timer & Async Cleanup in Components**: Always track asynchronous timers (`setTimeout`, `setInterval`) with `useRef` and clear them inside a `useEffect` cleanup return function to avoid memory leaks or state updates after unmount.
 
 ### 9. Database & Drizzle ORM
 
