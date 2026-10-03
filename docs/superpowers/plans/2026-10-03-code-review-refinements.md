@@ -30,9 +30,11 @@
 ### Task 1: Update Document Language in Root Document
 
 **Files:**
+
 - Modify: `app/root.tsx:32-35`
 
 **Interfaces:**
+
 - Consumes: Standard React Router `Layout` component in `app/root.tsx`
 - Produces: Correct `id` language attribute for accessibility and SEO
 
@@ -64,11 +66,13 @@ git commit -m "fix(root): set document language to id for accessibility"
 ### Task 2: Centralize Contact Constants & Deduplicate Copy Logic
 
 **Files:**
+
 - Modify: `app/constants/home.ts`
 - Modify: `app/components/home/hero-section.tsx`
 - Modify: `app/components/home/cta-section.tsx`
 
 **Interfaces:**
+
 - Consumes: `CONTACT_INFO` from `app/constants/home.ts`
 - Produces: Centralized contact metadata and consistent clipboard interaction
 
@@ -103,15 +107,16 @@ import {
 ```
 
 In `handleCopyContact`:
+
 ```typescript
-  const handleCopyContact = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(CONTACT_INFO.fullText);
-    }
-    toast.success('Kontak disalin ke clipboard!', {
-      description: `Sekretariat DPRD Kab. Tapin: ${CONTACT_INFO.email}`,
-    });
-  };
+const handleCopyContact = () => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(CONTACT_INFO.fullText);
+  }
+  toast.success('Kontak disalin ke clipboard!', {
+    description: `Sekretariat DPRD Kab. Tapin: ${CONTACT_INFO.email}`,
+  });
+};
 ```
 
 - [ ] **Step 3: Refactor `cta-section.tsx` to use `CONTACT_INFO`**
@@ -123,15 +128,16 @@ import { CONTACT_INFO } from '~/constants/home';
 ```
 
 In `handleCopyContact`:
+
 ```typescript
-  const handleCopyContact = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(CONTACT_INFO.fullText);
-    }
-    toast.success('Kontak disalin ke clipboard!', {
-      description: `Sekretariat DPRD Kab. Tapin: ${CONTACT_INFO.email}`,
-    });
-  };
+const handleCopyContact = () => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(CONTACT_INFO.fullText);
+  }
+  toast.success('Kontak disalin ke clipboard!', {
+    description: `Sekretariat DPRD Kab. Tapin: ${CONTACT_INFO.email}`,
+  });
+};
 ```
 
 - [ ] **Step 4: Verify formatting & type check**
@@ -151,11 +157,13 @@ git commit -m "refactor(home): centralize contact information and deduplicate co
 ### Task 3: Clean Up `HeroSection` Redundant Prop, Accessibility Conflict, and Agenda Avatars
 
 **Files:**
+
 - Modify: `app/types/home.ts:9-12`
 - Modify: `app/components/home/hero-section.tsx`
 - Modify: `app/routes/home.tsx:26-28`
 
 **Interfaces:**
+
 - Consumes: `HeroSectionProps` with only `{ onCheckin: () => void }`
 - Produces: Clean props contract, conflict-free accessibility markup, and shadcn `Avatar` usage
 
@@ -172,6 +180,7 @@ export interface HeroSectionProps {
 - [ ] **Step 2: Update `HeroSection` in `app/components/home/hero-section.tsx`**
 
 1. Change component signature to:
+
 ```typescript
 export function HeroSection({ onCheckin }: HeroSectionProps) {
 ```
@@ -179,6 +188,7 @@ export function HeroSection({ onCheckin }: HeroSectionProps) {
 2. Remove the contradictory `<span className="sr-only" aria-hidden="true">{statHadir}</span>` element at the bottom of the section.
 
 3. Replace native `<img>` in `AGENDA_AVATARS` (around lines 550-560) with the shadcn `Avatar` primitive:
+
 ```tsx
 <div className="flex -space-x-1.5">
   {AGENDA_AVATARS.map((src, i) => (
@@ -193,9 +203,11 @@ export function HeroSection({ onCheckin }: HeroSectionProps) {
 - [ ] **Step 3: Update `HeroSection` usage in `app/routes/home.tsx`**
 
 In `app/routes/home.tsx`, change:
+
 ```tsx
 <HeroSection onCheckin={() => setStatHadir((n) => n + 1)} />
 ```
+
 (removing `statHadir={statHadir}`)
 
 - [ ] **Step 4: Run typecheck and lint**
@@ -215,11 +227,13 @@ git commit -m "refactor(hero): remove redundant prop, resolve sr-only conflict, 
 ### Task 4: Unify Navigation & Implement Client-Side Routing in Layout
 
 **Files:**
+
 - Modify: `app/constants/navigation.ts`
 - Modify: `app/components/layout/navbar.tsx`
 - Modify: `app/components/layout/footer.tsx`
 
 **Interfaces:**
+
 - Consumes: `NAV_LINKS` and `TOP_NAV_LINKS` from `app/constants/navigation.ts`
 - Produces: Dynamic navbar links and client-side smooth transitions using React Router `<Link>`
 
@@ -303,10 +317,12 @@ git commit -m "refactor(layout): unify navbar with navigation constants and use 
 ### Task 5: Add Timer Cleanup to Simulation Forms
 
 **Files:**
+
 - Modify: `app/routes/login.tsx`
 - Modify: `app/components/home/simulator-section.tsx`
 
 **Interfaces:**
+
 - Consumes: React `useEffect` and `useRef` hooks
 - Produces: Leak-free async prototype simulations that safely clean up timers on unmount
 
@@ -320,31 +336,32 @@ import { useEffect, useRef, useState } from 'react';
 ```
 
 Track timers and clear them on unmount:
+
 ```typescript
-  const timerIdsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+const timerIdsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  useEffect(() => {
-    return () => {
-      timerIdsRef.current.forEach(clearTimeout);
-    };
-  }, []);
-
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setFeedback(null);
-
-    // Simulated login process with tracked timers
-    const timer1 = setTimeout(() => {
-      setIsLoading(false);
-      setFeedback('Mengautentikasi kredensial pegawai ke server DPRD Tapin...');
-      const timer2 = setTimeout(() => {
-        setFeedback('Akses berhasil. Mengalihkan ke Dashboard Presensi...');
-      }, 1000);
-      timerIdsRef.current.push(timer2);
-    }, 1200);
-    timerIdsRef.current.push(timer1);
+useEffect(() => {
+  return () => {
+    timerIdsRef.current.forEach(clearTimeout);
   };
+}, []);
+
+const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setFeedback(null);
+
+  // Simulated login process with tracked timers
+  const timer1 = setTimeout(() => {
+    setIsLoading(false);
+    setFeedback('Mengautentikasi kredensial pegawai ke server DPRD Tapin...');
+    const timer2 = setTimeout(() => {
+      setFeedback('Akses berhasil. Mengalihkan ke Dashboard Presensi...');
+    }, 1000);
+    timerIdsRef.current.push(timer2);
+  }, 1200);
+  timerIdsRef.current.push(timer1);
+};
 ```
 
 - [ ] **Step 2: Add timer cleanup in `simulator-section.tsx`**
@@ -357,33 +374,34 @@ import { useEffect, useRef, useState } from 'react';
 ```
 
 Track timers and clear on unmount:
+
 ```typescript
-  const timerIdsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+const timerIdsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  useEffect(() => {
-    return () => {
-      timerIdsRef.current.forEach(clearTimeout);
-    };
-  }, []);
-
-  const handleRunSimulator = () => {
-    if (simState === 'simulating') return;
-    setSimState('simulating');
-
-    const timer1 = setTimeout(() => {
-      setSimState('verified');
-      onVerified();
-      toast.success('Presensi apel berhasil diverifikasi!', {
-        description: 'Lokasi: Halaman Kantor DPRD Kab. Tapin (Radius valid)',
-      });
-
-      const timer2 = setTimeout(() => {
-        setSimState('idle');
-      }, 5000);
-      timerIdsRef.current.push(timer2);
-    }, 1600);
-    timerIdsRef.current.push(timer1);
+useEffect(() => {
+  return () => {
+    timerIdsRef.current.forEach(clearTimeout);
   };
+}, []);
+
+const handleRunSimulator = () => {
+  if (simState === 'simulating') return;
+  setSimState('simulating');
+
+  const timer1 = setTimeout(() => {
+    setSimState('verified');
+    onVerified();
+    toast.success('Presensi apel berhasil diverifikasi!', {
+      description: 'Lokasi: Halaman Kantor DPRD Kab. Tapin (Radius valid)',
+    });
+
+    const timer2 = setTimeout(() => {
+      setSimState('idle');
+    }, 5000);
+    timerIdsRef.current.push(timer2);
+  }, 1600);
+  timerIdsRef.current.push(timer1);
+};
 ```
 
 - [ ] **Step 3: Run typecheck and lint**
@@ -403,9 +421,11 @@ git commit -m "fix(forms): clear simulation timeouts on component unmount"
 ### Task 6: Execute Full Quality Gates & Final Verification
 
 **Files:**
+
 - Entire repository
 
 **Interfaces:**
+
 - Consumes: npm build and check scripts
 - Produces: Production-ready clean build artifacts
 

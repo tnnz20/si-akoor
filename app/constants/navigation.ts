@@ -12,4 +12,3 @@ export const NAV_LINKS: NavLinkItem[] = [
   ...TOP_NAV_LINKS,
   { label: 'Portal Pegawai', href: '/login' },
 ];
-
