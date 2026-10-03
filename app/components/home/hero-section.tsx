@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import {
   AGENDA_AVATARS,
   CHAT_AVATARS,
+  CONTACT_INFO,
   INITIAL_MESSAGES,
   MOCKUP_TABS,
   type MockupTab,
@@ -72,13 +73,11 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
   };
 
   const handleCopyContact = () => {
-    const textToCopy =
-      'Sekretariat DPRD Kab. Tapin: setwan@tapinkab.go.id | Bagian Umum & Kepegawaian';
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(textToCopy);
+      navigator.clipboard.writeText(CONTACT_INFO.fullText);
     }
     toast.success('Kontak disalin ke clipboard!', {
-      description: 'Sekretariat DPRD Kab. Tapin: setwan@tapinkab.go.id',
+      description: `Sekretariat DPRD Kab. Tapin: ${CONTACT_INFO.email}`,
     });
   };
 

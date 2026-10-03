@@ -96,3 +96,10 @@ export const FAQ_ITEMS: FaqItem[] = [
       'Si Akoor menerapkan Offline-First Cache Architecture. Data presensi dan koordinasi tetap terenkripsi dan tersimpan di memori perangkat, kemudian otomatis disinkronisasi ke server begitu terhubung ke jaringan internet kantor DPRD Tapin.',
   },
 ];
+
+export const CONTACT_INFO = {
+  email: 'setwan@tapinkab.go.id',
+  division: 'Bagian Umum & Kepegawaian',
+  address: 'Jl. Brigjend H. Hasan Basry No. 01, Rantau, Kab. Tapin',
+  fullText: 'Sekretariat DPRD Kab. Tapin: setwan@tapinkab.go.id | Bagian Umum & Kepegawaian',
+} as const;
