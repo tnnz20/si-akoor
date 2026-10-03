@@ -2,17 +2,9 @@
 import { useState } from 'react';
 
 import { Link } from 'react-router';
+import { NAV_LINKS } from '~/constants/navigation';
 
 import { ArrowUp, Check, Copy, Mail, MapPin } from 'lucide-react';
-
-const NAV_LINKS = [
-  { label: 'Fitur', href: '/#fitur' },
-  { label: 'Modul', href: '/#keunggulan' },
-  { label: 'Pratinjau', href: '/#mockup-dashboard' },
-  { label: 'Simulasi', href: '/#simulator' },
-  { label: 'FAQ', href: '/#faq' },
-  { label: 'Portal Pegawai', href: '/login' },
-];
 
 export function Footer() {
   const [copiedField, setCopiedField] = useState<string | null>(null);

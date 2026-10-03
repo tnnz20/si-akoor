@@ -1,17 +1,12 @@
+import { FEATURE_CHAT_AVATARS } from '~/constants/home';
 import { useCountUp } from '~/hooks/use-count-up';
 import { useReveal } from '~/hooks/use-reveal';
+import type { FeaturesSectionProps } from '~/types/home';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 import { Reveal } from './reveal';
-
-const FEATURE_CHAT_AVATARS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop',
-];
-
-interface FeaturesSectionProps {
-  statHadir: number;
-}
 
 export function FeaturesSection({ statHadir }: FeaturesSectionProps) {
   const { ref: gaugeRef, visible: gaugeVisible } = useReveal<HTMLDivElement>();
@@ -46,9 +41,12 @@ export function FeaturesSection({ statHadir }: FeaturesSectionProps) {
           <div className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full border-[28px] border-indigo-500"></div>
 
           <div>
-            <span className="mb-4 inline-block rounded-full bg-white/20 px-3 py-1 text-[11px] font-bold tracking-wider text-indigo-100 uppercase backdrop-blur-md">
+            <Badge
+              variant="outline"
+              className="mb-4 rounded-full border-white/30 bg-white/20 px-3 py-1 text-[11px] font-bold tracking-wider text-indigo-100 uppercase backdrop-blur-md"
+            >
               Komunikasi & Disposisi Instan
-            </span>
+            </Badge>
             <h3 className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl">
               Koordinasi Pasca Apel Pagi
             </h3>
@@ -63,21 +61,22 @@ export function FeaturesSection({ statHadir }: FeaturesSectionProps) {
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
                   {FEATURE_CHAT_AVATARS.map((src, i) => (
-                    <img
-                      key={src}
-                      className="h-7 w-7 rounded-full border border-white"
-                      src={src}
-                      alt={`Staf ${i + 1}`}
-                    />
+                    <Avatar key={src} className="h-7 w-7 border border-white">
+                      <AvatarImage src={src} alt={`Staf ${i + 1}`} />
+                      <AvatarFallback className="text-[9px]">S{i + 1}</AvatarFallback>
+                    </Avatar>
                   ))}
                 </div>
                 <span className="text-xs font-bold text-neutral-700">
                   Tim Fasilitasi Sidang & Reses
                 </span>
               </div>
-              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-600">
+              <Badge
+                variant="outline"
+                className="border-emerald-200 bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700"
+              >
                 Aktif
-              </span>
+              </Badge>
             </div>
 
             <div className="space-y-2 text-xs">
@@ -100,9 +99,12 @@ export function FeaturesSection({ statHadir }: FeaturesSectionProps) {
           delay={100}
         >
           <div>
-            <span className="mb-4 inline-block rounded-full bg-amber-200 px-3 py-1 text-[11px] font-bold tracking-wider text-amber-900 uppercase">
+            <Badge
+              variant="outline"
+              className="mb-4 rounded-full border-amber-300 bg-amber-200 px-3 py-1 text-[11px] font-bold tracking-wider text-amber-900 uppercase"
+            >
               Rekapitulasi Otomatis
-            </span>
+            </Badge>
             <h3 className="mb-2 text-2xl font-bold tracking-tight text-neutral-900">
               Kalkulasi Disiplin & Evaluasi TPP
             </h3>
@@ -199,9 +201,12 @@ export function FeaturesSection({ statHadir }: FeaturesSectionProps) {
           </div>
 
           <div>
-            <span className="mb-4 inline-block rounded-full bg-lime-300 px-3 py-1 text-[11px] font-bold tracking-wider text-lime-950 uppercase">
+            <Badge
+              variant="outline"
+              className="mb-4 rounded-full border-lime-400 bg-lime-300 px-3 py-1 text-[11px] font-bold tracking-wider text-lime-950 uppercase"
+            >
               Jadwal & Agenda
-            </span>
+            </Badge>
             <h3 className="mb-2 text-2xl font-bold tracking-tight text-neutral-900">
               Sinkronisasi Jadwal Petugas Apel
             </h3>
@@ -258,9 +263,12 @@ export function FeaturesSection({ statHadir }: FeaturesSectionProps) {
           delay={100}
         >
           <div>
-            <span className="mb-4 inline-block rounded-full bg-neutral-100 px-3 py-1 text-[11px] font-bold tracking-wider text-neutral-800 uppercase">
+            <Badge
+              variant="outline"
+              className="mb-4 rounded-full border-neutral-200 bg-neutral-100 px-3 py-1 text-[11px] font-bold tracking-wider text-neutral-800 uppercase"
+            >
               Keamanan Geofencing
-            </span>
+            </Badge>
             <h3 className="mb-2 text-2xl font-bold tracking-tight text-neutral-900">
               Radius Halaman Kantor DPRD Tapin
             </h3>

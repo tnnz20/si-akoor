@@ -1,17 +1,17 @@
 import { useState } from 'react';
 
+import { toast } from 'sonner';
+import type { SimState, SimulatorSectionProps } from '~/types/home';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
 import { RefreshCw } from 'lucide-react';
 
 import { Reveal } from './reveal';
-import { useToast } from './toast';
-
-interface SimulatorSectionProps {
-  onVerified: () => void;
-}
 
 export function SimulatorSection({ onVerified }: SimulatorSectionProps) {
-  const notify = useToast();
-  const [simState, setSimState] = useState<'idle' | 'simulating' | 'verified'>('idle');
+  const [simState, setSimState] = useState<SimState>('idle');
 
   const handleRunSimulator = () => {
     if (simState === 'simulating') return;
@@ -20,7 +20,9 @@ export function SimulatorSection({ onVerified }: SimulatorSectionProps) {
     setTimeout(() => {
       setSimState('verified');
       onVerified();
-      notify('Presensi apel berhasil diverifikasi di Halaman Kantor DPRD Kab. Tapin!');
+      toast.success('Presensi apel berhasil diverifikasi!', {
+        description: 'Lokasi: Halaman Kantor DPRD Kab. Tapin (Radius valid)',
+      });
 
       setTimeout(() => {
         setSimState('idle');
@@ -35,9 +37,12 @@ export function SimulatorSection({ onVerified }: SimulatorSectionProps) {
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto mb-12 max-w-2xl text-center">
-          <span className="mb-3 inline-block rounded-full border border-white/10 bg-white/10 px-4 py-1.5 text-xs font-bold tracking-wider text-amber-300 uppercase">
+          <Badge
+            variant="outline"
+            className="mb-3 rounded-full border-white/10 bg-white/10 px-4 py-1.5 text-xs font-bold tracking-wider text-amber-300 uppercase"
+          >
             Simulasi Presensi
-          </span>
+          </Badge>
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
             Alur Presensi Apel DPRD Tapin
           </h2>
@@ -95,13 +100,13 @@ export function SimulatorSection({ onVerified }: SimulatorSectionProps) {
                 ) : null}
               </div>
 
-              <button
+              <Button
                 type="button"
                 onClick={handleRunSimulator}
                 disabled={simState === 'simulating'}
-                className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold shadow-lg transition-all active:scale-98 ${
+                className={`flex h-auto w-full cursor-pointer items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold shadow-lg transition-all active:scale-98 ${
                   simState === 'verified'
-                    ? 'bg-emerald-500 text-white'
+                    ? 'bg-emerald-500 text-white hover:bg-emerald-600'
                     : simState === 'simulating'
                       ? 'cursor-not-allowed bg-amber-500/80 text-neutral-900'
                       : 'bg-amber-400 text-neutral-900 hover:bg-amber-500'
@@ -120,7 +125,7 @@ export function SimulatorSection({ onVerified }: SimulatorSectionProps) {
                     <span className="text-xs">⚡</span>
                   </>
                 )}
-              </button>
+              </Button>
             </div>
 
             {/* Right: Real-time telemetry log */}

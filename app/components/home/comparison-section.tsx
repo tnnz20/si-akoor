@@ -1,18 +1,8 @@
+import { AKNOR_POINTS, MANUAL_POINTS } from '~/constants/home';
+
+import { Card } from '@/components/ui/card';
+
 import { Reveal } from './reveal';
-
-const MANUAL_POINTS = [
-  'Antrean paraf presensi manual di lapangan sebelum apel dimulai.',
-  'Rentan titip absen dan kurang akurat dalam pencatatan waktu.',
-  'Arahan pimpinan apel sering tidak terdisposisi secara sistematis ke staf.',
-  'Rekapitulasi bulanan menyita waktu staf kepegawaian untuk perhitungan TPP.',
-];
-
-const AKNOR_POINTS = [
-  'Presensi serentak seluruh staf tuntas cepat langsung di halaman kantor.',
-  'Geofencing radius 25 meter anti-manipulasi lokasi.',
-  'Arahan Sekwan langsung terdisposisi ke bagian kerja terkait secara real-time.',
-  'Rekapitulasi otomatis hitungan detik untuk laporan pimpinan.',
-];
 
 export function ComparisonSection() {
   return (
@@ -27,45 +17,44 @@ export function ComparisonSection() {
         </p>
       </Reveal>
 
-      <Reveal
-        className="overflow-hidden rounded-3xl border border-neutral-200/90 bg-white shadow-sm"
-        delay={150}
-      >
-        <div className="grid grid-cols-1 divide-y divide-neutral-200 md:grid-cols-2 md:divide-x md:divide-y-0">
-          <div className="bg-neutral-50/50 p-6 sm:p-8">
-            <div className="mb-4 flex items-center gap-2 text-sm font-bold text-rose-600">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-xs">
-                ✕
-              </span>
-              <span>Metode Absensi Paraf Lembaran Kertas</span>
+      <Reveal delay={150}>
+        <Card className="overflow-hidden rounded-3xl border-neutral-200/90 bg-white p-0 shadow-sm">
+          <div className="grid grid-cols-1 divide-y divide-neutral-200 md:grid-cols-2 md:divide-x md:divide-y-0">
+            <div className="bg-neutral-50/50 p-6 sm:p-8">
+              <div className="mb-4 flex items-center gap-2 text-sm font-bold text-rose-600">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-xs">
+                  ✕
+                </span>
+                <span>Metode Absensi Paraf Lembaran Kertas</span>
+              </div>
+              <ul className="space-y-3.5 text-xs text-neutral-600 sm:text-sm">
+                {MANUAL_POINTS.map((point) => (
+                  <li key={point} className="flex items-start gap-2.5">
+                    <span className="font-bold text-rose-500">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-3.5 text-xs text-neutral-600 sm:text-sm">
-              {MANUAL_POINTS.map((point) => (
-                <li key={point} className="flex items-start gap-2.5">
-                  <span className="font-bold text-rose-500">•</span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          <div className="bg-amber-50/30 p-6 sm:p-8">
-            <div className="mb-4 flex items-center gap-2 text-sm font-bold text-emerald-700">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-xs">
-                ✓
-              </span>
-              <span>Dengan Ekosistem Si Akoor DPRD Tapin</span>
+            <div className="bg-amber-50/30 p-6 sm:p-8">
+              <div className="mb-4 flex items-center gap-2 text-sm font-bold text-emerald-700">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-xs">
+                  ✓
+                </span>
+                <span>Dengan Ekosistem Si Akoor DPRD Tapin</span>
+              </div>
+              <ul className="space-y-3.5 text-xs text-neutral-800 sm:text-sm">
+                {AKNOR_POINTS.map((point) => (
+                  <li key={point} className="flex items-start gap-2.5">
+                    <span className="font-bold text-emerald-600">✓</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-3.5 text-xs text-neutral-800 sm:text-sm">
-              {AKNOR_POINTS.map((point) => (
-                <li key={point} className="flex items-start gap-2.5">
-                  <span className="font-bold text-emerald-600">✓</span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
           </div>
-        </div>
+        </Card>
       </Reveal>
     </section>
   );

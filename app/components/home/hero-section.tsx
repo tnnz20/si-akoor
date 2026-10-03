@@ -1,73 +1,29 @@
 import { useState } from 'react';
-import type { FormEvent } from 'react';
+import type { SubmitEvent } from 'react';
 
 import { Link } from 'react-router';
+import { toast } from 'sonner';
+import {
+  AGENDA_AVATARS,
+  CHAT_AVATARS,
+  INITIAL_MESSAGES,
+  MOCKUP_TABS,
+  type MockupTab,
+  TAB_HEADINGS,
+  TASK_AVATARS,
+} from '~/constants/home';
 import { useCountUp } from '~/hooks/use-count-up';
 import { useReveal } from '~/hooks/use-reveal';
+import type { ChatMessage, HeroSectionProps } from '~/types/home';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 import { ArrowRight, Bell, Radio, Send, Users } from 'lucide-react';
 
 import { Reveal } from './reveal';
-import { useToast } from './toast';
-
-interface ChatMessage {
-  id: string;
-  sender: string;
-  time: string;
-  text: string;
-  variant: 'yellow' | 'lime' | 'user';
-}
-
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: 'msg-1',
-    sender: 'Sekretaris DPRD',
-    time: '10:25',
-    text: 'Mohon rekapitulasi kehadiran apel pagi disiapkan sebelum jam 10.30 untuk evaluasi kedisiplinan staf.',
-    variant: 'yellow',
-  },
-  {
-    id: 'msg-2',
-    sender: 'Staf Umum & Kepegawaian',
-    time: '10:32',
-    text: 'Siap laksanakan Pak Sekwan, data kehadiran aparatur sudah terekap otomatis di portal Si Akoor 🙏',
-    variant: 'lime',
-  },
-];
-
-const MOCKUP_TABS = [
-  'Ikhtisar',
-  'Presensi Apel',
-  'Koordinasi Tim',
-  'Jadwal Agenda',
-  'Aktivitas',
-] as const;
-
-const TAB_HEADINGS: Record<(typeof MOCKUP_TABS)[number], string> = {
-  Ikhtisar: 'Selamat datang kembali, Drs. H. Noor Ifansyah, M.AP',
-  'Presensi Apel': 'Presensi Apel Pagi — Rekapitulasi Hari Ini',
-  'Koordinasi Tim': 'Ruang Koordinasi Antar Bagian',
-  'Jadwal Agenda': 'Agenda Kedinasan Pekan Ini',
-  Aktivitas: 'Log Aktivitas Sekretariat Terkini',
-};
-
-const CHAT_AVATARS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop',
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop',
-];
-
-const TASK_AVATARS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop',
-];
-
-const AGENDA_AVATARS = [
-  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop',
-  'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=50&h=50&fit=crop',
-  'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50&h=50&fit=crop',
-];
 
 const WEEK_BARS = [
   { day: 'Sen', level: 'h-16', active: false },
@@ -79,15 +35,8 @@ const WEEK_BARS = [
   { day: 'Min', level: 'h-8', active: false },
 ];
 
-interface HeroSectionProps {
-  statHadir: number;
-  onCheckin: () => void;
-}
-
 export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
-  const notify = useToast();
-
-  const [activeTab, setActiveTab] = useState<(typeof MOCKUP_TABS)[number]>('Ikhtisar');
+  const [activeTab, setActiveTab] = useState<MockupTab>('Ikhtisar');
   const [gaugeValue, setGaugeValue] = useState(94.2);
   const [gaugeOffset, setGaugeOffset] = useState(25.8);
   const [chartPeriod, setChartPeriod] = useState<'Bulan' | 'Tahun'>('Bulan');
@@ -101,10 +50,10 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
     setGaugeOffset(10);
     setGaugeValue(97.8);
     onCheckin();
-    notify('Data presensi apel internal DPRD Tapin disinkronkan ke dashboard!');
+    toast.success('Data presensi apel internal DPRD Tapin disinkronkan ke dashboard!');
   };
 
-  const handleSendChat = (e: FormEvent) => {
+  const handleSendChat = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const text = chatInput.trim();
     if (!text) return;
@@ -119,7 +68,7 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
 
     setMessages((prev) => [...prev, newMessage]);
     setChatInput('');
-    notify(`Pesan terkirim ke Ruang Koordinasi DPRD: "${text}"`);
+    toast.success(`Pesan terkirim ke Ruang Koordinasi DPRD: "${text}"`);
   };
 
   const handleCopyContact = () => {
@@ -128,19 +77,24 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(textToCopy);
     }
-    notify('Kontak Sekretariat DPRD Kabupaten Tapin disalin ke clipboard!');
+    toast.success('Kontak disalin ke clipboard!', {
+      description: 'Sekretariat DPRD Kab. Tapin: setwan@tapinkab.go.id',
+    });
   };
 
   return (
     <section className="relative mx-auto flex max-w-6xl flex-col items-center px-4 pt-10 pb-16 text-center sm:px-6 lg:px-8">
       <Reveal>
         <div className="mb-6 flex justify-center">
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-neutral-200/80 bg-white/90 px-4 py-1.5 shadow-sm transition-shadow hover:shadow">
+          <Badge
+            variant="outline"
+            className="gap-2.5 rounded-full border-neutral-200/80 bg-white/90 px-4 py-1.5 shadow-xs transition-shadow hover:shadow"
+          >
             <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600"></span>
             <span className="text-xs font-bold text-neutral-800">
               Portal Resmi Internal &bull; Sekretariat DPRD Kabupaten Tapin
             </span>
-          </div>
+          </Badge>
         </div>
 
         <h1 className="mx-auto max-w-4xl text-4xl leading-[1.15] font-extrabold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
@@ -171,20 +125,23 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
-          <Link
-            to="/login"
-            className="flex cursor-pointer items-center gap-2 rounded-full bg-amber-400 px-7 py-3.5 text-sm font-bold text-neutral-900 shadow transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:shadow-lg active:translate-y-0 sm:text-base"
+          <Button
+            asChild
+            className="h-auto cursor-pointer gap-2 rounded-full bg-amber-400 px-7 py-3.5 text-sm font-bold text-neutral-900 shadow transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:shadow-lg active:translate-y-0 sm:text-base"
           >
-            <span>Masuk ke Sistem</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <button
+            <Link to="/login">
+              <span>Masuk ke Sistem</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+          <Button
             type="button"
+            variant="outline"
             onClick={handleCopyContact}
-            className="cursor-pointer rounded-full border border-neutral-300 bg-white px-6 py-3.5 text-sm font-semibold text-neutral-800 shadow-sm transition-all hover:bg-neutral-50 hover:shadow sm:text-base"
+            className="h-auto cursor-pointer rounded-full border-neutral-300 bg-white px-6 py-3.5 text-sm font-semibold text-neutral-800 shadow-xs transition-all hover:bg-neutral-50 hover:shadow sm:text-base"
           >
             Bantuan Bagian Umum & Kepegawaian
-          </button>
+          </Button>
         </div>
       </Reveal>
 
@@ -254,7 +211,7 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
                     type="button"
                     onClick={() => {
                       setActiveTab(tab);
-                      notify(`Beralih ke tab: ${tab}`);
+                      toast.info(`Beralih ke tab: ${tab}`);
                     }}
                     className={`cursor-pointer rounded-full px-3.5 py-1.5 transition-colors ${
                       isActive
@@ -269,22 +226,32 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
             </div>
 
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => notify('Tidak ada notifikasi baru.')}
-                className="relative cursor-pointer"
-                aria-label="Notifikasi"
-              >
-                <span className="absolute top-0 right-0 h-2 w-2 rounded-full border border-white bg-amber-400"></span>
-                <Bell className="h-5 w-5 text-neutral-500 hover:text-neutral-800" />
-              </button>
-              <div className="h-8 w-8 overflow-hidden rounded-full border border-neutral-200">
-                <img
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      onClick={() => toast.info('Tidak ada notifikasi baru.')}
+                      className="relative cursor-pointer"
+                      aria-label="Notifikasi"
+                    >
+                      <span className="absolute top-0 right-0 h-2 w-2 rounded-full border border-white bg-amber-400"></span>
+                      <Bell className="h-5 w-5 text-neutral-500 hover:text-neutral-800" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Notifikasi sistem</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <Avatar className="h-8 w-8 border border-neutral-200">
+                <AvatarImage
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces"
                   alt="Pejabat Sekretariat DPRD"
-                  className="h-full w-full object-cover"
                 />
-              </div>
+                <AvatarFallback className="text-[10px]">SD</AvatarFallback>
+              </Avatar>
             </div>
           </div>
 
@@ -300,32 +267,36 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <button
+              <Button
                 type="button"
                 onClick={handleQuickCheckin}
-                className="flex cursor-pointer items-center gap-1.5 rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all hover:bg-neutral-800"
+                className="h-auto cursor-pointer gap-1.5 rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all hover:bg-neutral-800"
               >
                 <span className="text-sm leading-none">+</span>
                 <span>Buat Disposisi Apel</span>
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={() =>
-                  notify('Pemberitahuan apel dikirimkan ke 142 pegawai Sekretariat DPRD Tapin.')
+                  toast.success(
+                    'Pemberitahuan apel dikirimkan ke 142 pegawai Sekretariat DPRD Tapin.'
+                  )
                 }
-                className="flex cursor-pointer items-center gap-1.5 rounded-full bg-neutral-100 px-3.5 py-2 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-200"
+                className="h-auto cursor-pointer gap-1.5 rounded-full bg-neutral-100 px-3.5 py-2 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-200"
               >
                 <Users className="h-3.5 w-3.5 text-neutral-500" />
                 <span>Notifikasi Staf</span>
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                onClick={() => notify('Pelacak waktu apel aktif di Halaman Kantor DPRD')}
-                className="hidden cursor-pointer items-center gap-1.5 rounded-full bg-neutral-100 px-3.5 py-2 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-200 sm:flex"
+                variant="secondary"
+                onClick={() => toast.info('Pelacak waktu apel aktif di Halaman Kantor DPRD')}
+                className="hidden h-auto cursor-pointer gap-1.5 rounded-full bg-neutral-100 px-3.5 py-2 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-200 sm:flex"
               >
                 <Radio className="h-3.5 w-3.5 text-neutral-500" />
                 <span>Mulai Presensi</span>
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -340,7 +311,7 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
                   </span>
                   <button
                     type="button"
-                    onClick={() => notify('Membuka rekap kehadiran internal DPRD Tapin...')}
+                    onClick={() => toast.info('Membuka rekap kehadiran internal DPRD Tapin...')}
                     className="cursor-pointer text-[11px] font-semibold text-neutral-400 hover:text-neutral-700"
                   >
                     Lihat Semua
@@ -443,12 +414,10 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
                     </div>
                     <div className="flex -space-x-1.5">
                       {TASK_AVATARS.map((src, i) => (
-                        <img
-                          key={src}
-                          className="h-5 w-5 rounded-full border border-white"
-                          src={src}
-                          alt={`Staf ${i + 1}`}
-                        />
+                        <Avatar key={src} className="h-5 w-5 border border-white">
+                          <AvatarImage src={src} alt={`Staf ${i + 1}`} />
+                          <AvatarFallback className="text-[7px]">S{i + 1}</AvatarFallback>
+                        </Avatar>
                       ))}
                     </div>
                   </div>
@@ -468,12 +437,10 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
                   <div className="flex items-center gap-2">
                     <div className="flex -space-x-2">
                       {CHAT_AVATARS.map((src, i) => (
-                        <img
-                          key={src}
-                          className="h-6 w-6 rounded-full border-2 border-white object-cover"
-                          src={src}
-                          alt={`Staf ${i + 1}`}
-                        />
+                        <Avatar key={src} className="h-6 w-6 border-2 border-white">
+                          <AvatarImage src={src} alt={`Staf ${i + 1}`} />
+                          <AvatarFallback className="text-[8px]">S{i + 1}</AvatarFallback>
+                        </Avatar>
                       ))}
                     </div>
                     <span className="rounded-full border border-neutral-200 bg-white px-1.5 py-0.5 text-[10px] font-bold text-neutral-500">
@@ -561,7 +528,7 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
                   </span>
                   <button
                     type="button"
-                    onClick={() => notify('Membuka agenda rapat & sidang dewan...')}
+                    onClick={() => toast.info('Membuka agenda rapat & sidang dewan...')}
                     className="cursor-pointer text-[11px] font-semibold text-neutral-400 hover:text-neutral-700"
                   >
                     Lihat Semua

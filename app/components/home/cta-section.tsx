@@ -1,18 +1,20 @@
 import { Link } from 'react-router';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
 
 import { Reveal } from './reveal';
-import { useToast } from './toast';
 
 export function CtaSection() {
-  const notify = useToast();
-
   const handleCopyContact = () => {
     const textToCopy =
       'Sekretariat DPRD Kab. Tapin: setwan@tapinkab.go.id | Bagian Umum & Kepegawaian';
     if (navigator.clipboard) {
       navigator.clipboard.writeText(textToCopy);
     }
-    notify('Kontak Sekretariat DPRD Kabupaten Tapin disalin ke clipboard!');
+    toast.success('Kontak disalin ke clipboard!', {
+      description: 'Sekretariat DPRD Kab. Tapin: setwan@tapinkab.go.id',
+    });
   };
 
   return (
@@ -31,19 +33,20 @@ export function CtaSection() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/login"
-              className="cursor-pointer rounded-full bg-amber-400 px-8 py-4 text-sm font-bold text-neutral-900 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:shadow-xl sm:text-base"
+            <Button
+              asChild
+              className="h-auto cursor-pointer rounded-full bg-amber-400 px-8 py-4 text-sm font-bold text-neutral-900 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:shadow-xl sm:text-base"
             >
-              Masuk ke Sistem Si Akoor
-            </Link>
-            <button
+              <Link to="/login">Masuk ke Sistem Si Akoor</Link>
+            </Button>
+            <Button
               type="button"
+              variant="outline"
               onClick={handleCopyContact}
-              className="cursor-pointer rounded-full border border-neutral-700 bg-neutral-800 px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-neutral-700 sm:text-base"
+              className="h-auto cursor-pointer rounded-full border-neutral-700 bg-neutral-800 px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-neutral-700 hover:text-white sm:text-base"
             >
               Kontak Bagian Umum & Kepegawaian
-            </button>
+            </Button>
           </div>
         </div>
       </Reveal>

@@ -7,7 +7,6 @@ import { FaqSection } from '~/components/home/faq-section';
 import { FeaturesSection } from '~/components/home/features-section';
 import { HeroSection } from '~/components/home/hero-section';
 import { SimulatorSection } from '~/components/home/simulator-section';
-import { ToastProvider } from '~/components/home/toast';
 
 import type { Route } from './+types/home';
 
@@ -24,16 +23,14 @@ export default function Home() {
   const [statHadir, setStatHadir] = useState(142);
 
   return (
-    <ToastProvider>
-      <main>
-        <HeroSection statHadir={statHadir} onCheckin={() => setStatHadir((n) => n + 1)} />
-        <DivisionsSection />
-        <FeaturesSection statHadir={statHadir} />
-        <SimulatorSection onVerified={() => setStatHadir((n) => n + 1)} />
-        <ComparisonSection />
-        <FaqSection />
-        <CtaSection />
-      </main>
-    </ToastProvider>
+    <main>
+      <HeroSection statHadir={statHadir} onCheckin={() => setStatHadir((n) => n + 1)} />
+      <DivisionsSection />
+      <FeaturesSection statHadir={statHadir} />
+      <SimulatorSection onVerified={() => setStatHadir((n) => n + 1)} />
+      <ComparisonSection />
+      <FaqSection />
+      <CtaSection />
+    </main>
   );
 }

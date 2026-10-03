@@ -1,3 +1,7 @@
+import { cn } from '@/lib/utils';
+
+import { Badge } from '@/components/ui/badge';
+
 import { Reveal } from './reveal';
 
 const INTERNAL_DIVISIONS = [
@@ -54,11 +58,15 @@ export function DivisionsSection() {
               style={{ transitionDelay: `${i * 50}ms` }}
               className="group flex items-center gap-2.5 rounded-full border border-neutral-200/80 bg-white/90 px-3.5 py-1.5 shadow-2xs transition-colors duration-150 hover:border-neutral-300 hover:bg-white"
             >
-              <span
-                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-black ${item.badgeClass}`}
+              <Badge
+                variant="outline"
+                className={cn(
+                  'flex h-6 w-6 shrink-0 items-center justify-center rounded-full p-0 text-[10px] font-black',
+                  item.badgeClass
+                )}
               >
                 {item.tag}
-              </span>
+              </Badge>
               <span className="text-xs font-semibold text-neutral-800 sm:text-sm">
                 <span className="hidden sm:inline sm:whitespace-nowrap">{item.name}</span>
                 <span className="sm:hidden">{item.shortName}</span>

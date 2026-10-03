@@ -1,5 +1,7 @@
 import { Link, useLocation } from 'react-router';
 
+import { Button } from '@/components/ui/button';
+
 import { ArrowLeft } from 'lucide-react';
 
 export function Navbar() {
@@ -70,20 +72,22 @@ export function Navbar() {
         {/* Action button */}
         <div className="flex shrink-0 items-center">
           {isLoginPage ? (
-            <Link
-              to="/"
-              className="flex cursor-pointer items-center gap-1.5 rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow transition-all hover:-translate-y-0.5 hover:bg-neutral-800 hover:shadow-lg active:translate-y-0 sm:px-5 sm:text-sm"
+            <Button
+              asChild
+              className="h-auto cursor-pointer rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow transition-all hover:-translate-y-0.5 hover:bg-neutral-800 hover:shadow-lg active:translate-y-0 sm:px-5 sm:text-sm"
             >
-              <ArrowLeft className="h-4 w-4" />
-              <span>Beranda</span>
-            </Link>
+              <Link to="/">
+                <ArrowLeft className="h-4 w-4" />
+                <span>Beranda</span>
+              </Link>
+            </Button>
           ) : (
-            <Link
-              to="/login"
-              className="cursor-pointer rounded-full bg-neutral-900 px-5 py-2 text-xs font-semibold text-white shadow transition-all hover:-translate-y-0.5 hover:bg-neutral-800 hover:shadow-lg active:translate-y-0 sm:text-sm"
+            <Button
+              asChild
+              className="h-auto cursor-pointer rounded-full bg-neutral-900 px-5 py-2 text-xs font-semibold text-white shadow transition-all hover:-translate-y-0.5 hover:bg-neutral-800 hover:shadow-lg active:translate-y-0 sm:text-sm"
             >
-              Masuk
-            </Link>
+              <Link to="/login">Masuk</Link>
+            </Button>
           )}
         </div>
       </nav>
