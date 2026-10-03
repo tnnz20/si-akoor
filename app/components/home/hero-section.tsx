@@ -36,7 +36,7 @@ const WEEK_BARS = [
   { day: 'Min', level: 'h-8', active: false },
 ];
 
-export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
+export function HeroSection({ onCheckin }: HeroSectionProps) {
   const [activeTab, setActiveTab] = useState<MockupTab>('Ikhtisar');
   const [gaugeValue, setGaugeValue] = useState(94.2);
   const [gaugeOffset, setGaugeOffset] = useState(25.8);
@@ -548,12 +548,10 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
                   <div className="flex items-center justify-between text-[10px]">
                     <div className="flex -space-x-1.5">
                       {AGENDA_AVATARS.map((src, i) => (
-                        <img
-                          key={src}
-                          className="h-5 w-5 rounded-full border border-white"
-                          src={src}
-                          alt={`Staf ${i + 1}`}
-                        />
+                        <Avatar key={src} className="h-5 w-5 border border-white">
+                          <AvatarImage src={src} alt={`Staf ${i + 1}`} />
+                          <AvatarFallback className="text-[7px]">S{i + 1}</AvatarFallback>
+                        </Avatar>
                       ))}
                     </div>
                     <div className="h-1.5 w-24 overflow-hidden rounded-full bg-neutral-100">
@@ -636,11 +634,6 @@ export function HeroSection({ statHadir, onCheckin }: HeroSectionProps) {
           </div>
         </div>
       </Reveal>
-
-      {/* Hidden live stat for parent sync */}
-      <span className="sr-only" aria-hidden="true">
-        {statHadir}
-      </span>
     </section>
   );
 }

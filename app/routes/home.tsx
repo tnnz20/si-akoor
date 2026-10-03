@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <main>
-      <HeroSection statHadir={statHadir} onCheckin={() => setStatHadir((n) => n + 1)} />
+      <HeroSection onCheckin={() => setStatHadir((n) => n + 1)} />
       <DivisionsSection />
       <FeaturesSection statHadir={statHadir} />
       <SimulatorSection onVerified={() => setStatHadir((n) => n + 1)} />

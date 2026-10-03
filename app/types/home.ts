@@ -7,7 +7,6 @@ export interface ChatMessage {
 }
 
 export interface HeroSectionProps {
-  statHadir: number;
   onCheckin: () => void;
 }
 
