@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { toast } from 'sonner';
 import type { SimState, SimulatorSectionProps } from '~/types/home';
@@ -12,22 +12,32 @@ import { Reveal } from './reveal';
 
 export function SimulatorSection({ onVerified }: SimulatorSectionProps) {
   const [simState, setSimState] = useState<SimState>('idle');
+  const timerIdsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    const timers = timerIdsRef.current;
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, []);
 
   const handleRunSimulator = () => {
     if (simState === 'simulating') return;
     setSimState('simulating');
 
-    setTimeout(() => {
+    const timer1 = setTimeout(() => {
       setSimState('verified');
       onVerified();
       toast.success('Presensi apel berhasil diverifikasi!', {
         description: 'Lokasi: Halaman Kantor DPRD Kab. Tapin (Radius valid)',
       });
 
-      setTimeout(() => {
+      const timer2 = setTimeout(() => {
         setSimState('idle');
       }, 5000);
+      timerIdsRef.current.push(timer2);
     }, 1600);
+    timerIdsRef.current.push(timer1);
   };
 
   return (

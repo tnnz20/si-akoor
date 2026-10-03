@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,14 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const timerIdsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    const timers = timerIdsRef.current;
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, []);
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,13 +49,15 @@ export default function Login() {
     setFeedback(null);
 
     // Simulated login process
-    setTimeout(() => {
+    const timer1 = setTimeout(() => {
       setIsLoading(false);
       setFeedback('Mengautentikasi kredensial pegawai ke server DPRD Tapin...');
-      setTimeout(() => {
+      const timer2 = setTimeout(() => {
         setFeedback('Akses berhasil. Mengalihkan ke Dashboard Presensi...');
       }, 1000);
+      timerIdsRef.current.push(timer2);
     }, 1200);
+    timerIdsRef.current.push(timer1);
   };
 
   return (
